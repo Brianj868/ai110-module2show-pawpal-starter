@@ -67,10 +67,14 @@ This was a deliberate simplification. To detect overlapping durations you'd need
 - How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
 - What kinds of prompts or questions were most helpful?
 
+    I used AI to mostly brainstorm and then implementation when I agreed with what we came up with together.
+
 **b. Judgment and verification**
 
 - Describe one moment where you did not accept an AI suggestion as-is.
 - How did you evaluate or verify what the AI suggested?
+
+    The first uml diagram it came up with was way too complex.
 
 ---
 
@@ -79,12 +83,22 @@ This was a deliberate simplification. To detect overlapping durations you'd need
 **a. What you tested**
 
 - What behaviors did you test?
+
+    In ReadMe.
+
 - Why were these tests important?
+
+    To make sure my logic is working correctly and getting the desired output. 
 
 **b. Confidence**
 
 - How confident are you that your scheduler works correctly?
+
+    In ReadMe.
+
 - What edge cases would you test next if you had more time?
+
+    Maybe ones related to streamlit.
 
 ---
 
@@ -93,11 +107,17 @@ This was a deliberate simplification. To detect overlapping durations you'd need
 **a. What went well**
 
 - What part of this project are you most satisfied with?
+    
+    The core logic. Everything went smoothly there.
 
 **b. What you would improve**
 
 - If you had another iteration, what would you improve or redesign?
 
+    I would add more complexity to my scheduler. It would handle actual dates, priority and task duration.
+
 **c. Key takeaway**
 
 - What is one important thing you learned about designing systems or working with AI on this project?
+
+    Defining core functionalities and classes early really helps.

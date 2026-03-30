@@ -22,6 +22,20 @@ Your final app should:
 - Display the plan clearly (and ideally explain the reasoning)
 - Include tests for the most important scheduling behaviors
 
+## Features
+
+- **Add owners and pets** — model the real relationship between a person and their animal(s), with each pet maintaining its own task list
+- **Task management** — create, remove, and mark tasks complete or incomplete; each task stores a title, description, duration, priority, scheduled time, and recurrence frequency
+- **Sort by time** — `Scheduler.sort_by_time()` orders all tasks across all pets chronologically using a lambda key, so the daily schedule always reads earliest-first
+- **Filter by status or pet** — `Scheduler.filter_tasks()` accepts an optional completion status and/or pet name, returning only the matching subset; both filters can be combined
+- **Conflict detection** — `Scheduler.get_conflicts()` performs a pairwise comparison of all scheduled tasks and surfaces a human-readable warning for any two tasks sharing the same time slot, whether on the same pet or different pets
+- **Recurring task auto-scheduling** — `Scheduler.complete_task()` marks a task done and, for `"daily"` or `"weekly"` tasks, automatically creates the next occurrence using Python's `timedelta`
+- **Streamlit UI** — interactive web interface with conflict warnings (`st.warning`), a priority-sorted task table, Pending/Completed metrics, and a color-coded schedule view
+
+## 📸 Demo
+
+![UML Diagram](uml_final.png)
+
 ## Smarter Scheduling
 
 The `Scheduler` class acts as the coordination layer between owners, pets, and tasks. Beyond basic task retrieval, it includes three algorithmic features:

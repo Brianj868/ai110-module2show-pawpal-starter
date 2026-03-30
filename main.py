@@ -11,48 +11,78 @@ whiskers = Pet(id="p2", name="Whiskers", species="Cat", breed="Siamese", owner_i
 owner.add_pet(buddy)
 owner.add_pet(whiskers)
 
-# Create tasks with different times
+# Add tasks OUT OF ORDER intentionally
+vet_checkup = Task(
+    id="t1", title="Vet Checkup",
+    description="Annual checkup", pet_id="p1",
+    time=datetime(2026, 3, 29, 14, 0)
+)
+
 morning_walk = Task(
-    id="t1",
-    title="Morning Walk",
-    description="30 minute walk around the block",
-    pet_id="p1",
-    time=datetime(2026, 3, 29, 8, 0),
-    frequency="daily"
+    id="t2", title="Morning Walk",
+    description="30 min walk", pet_id="p1",
+    time=datetime(2026, 3, 29, 8, 0)
 )
 
 feeding = Task(
-    id="t2",
-    title="Feeding",
-    description="Fill food and water bowls",
-    pet_id="p2",
-    time=datetime(2026, 3, 29, 9, 0),
-    frequency="daily"
+    id="t3", title="Feeding",
+    description="Fill food and water", pet_id="p2",
+    time=datetime(2026, 3, 29, 9, 0)
 )
 
-vet_checkup = Task(
-    id="t3",
-    title="Vet Checkup",
-    description="Annual checkup at the vet",
-    pet_id="p1",
-    time=datetime(2026, 3, 29, 14, 0),
-    frequency=None
+evening_grooming = Task(
+    id="t4", title="Evening Grooming",
+    description="Brush coat", pet_id="p2",
+    time=datetime(2026, 3, 29, 18, 0)
 )
 
-buddy.add_task(morning_walk)
-whiskers.add_task(feeding)
+# Intentional conflict: bath is scheduled at the same time as feeding (9:00 AM)
+bath = Task(
+    id="t5", title="Bath Time",
+    description="Scrub down", pet_id="p1",
+    time=datetime(2026, 3, 29, 9, 0)
+)
+
 buddy.add_task(vet_checkup)
+buddy.add_task(morning_walk)
+buddy.add_task(bath)                 # 9:00 AM — conflicts with feeding
+whiskers.add_task(evening_grooming)
+whiskers.add_task(feeding)           # 9:00 AM — conflicts with bath
 
-# Use Scheduler to print today's schedule
+# Mark one task complete to test filtering
+morning_walk.mark_complete()
+
 scheduler = Scheduler(owner)
 
-print("===== Today's Schedule =====")
-for task in scheduler.get_all_tasks():
+# --- Sort by time ---
+print("===== Sorted by Time =====")
+for task in scheduler.sort_by_time():
     pet_name = next(p.name for p in owner.get_pets() if p.id == task.pet_id)
     status = "Done" if task.is_complete else "Pending"
-    time_str = task.time.strftime("%I:%M %p") if task.time else "No time set"
-    freq_str = f"({task.frequency})" if task.frequency else ""
-    print(f"{time_str} | {pet_name} | {task.title} {freq_str} | {status}")
+    print(f"{task.time.strftime('%I:%M %p')} | {pet_name} | {task.title} | {status}")
 
-print("============================")
-print(f"Incomplete tasks: {len(scheduler.get_incomplete_tasks())}")
+print()
+
+# --- Filter: incomplete only ---
+print("===== Incomplete Tasks =====")
+for task in scheduler.filter_tasks(is_complete=False):
+    pet_name = next(p.name for p in owner.get_pets() if p.id == task.pet_id)
+    print(f"{task.title} | {pet_name}")
+
+print()
+
+# --- Filter: by pet name ---
+print("===== Whiskers' Tasks =====")
+for task in scheduler.filter_tasks(pet_name="Whiskers"):
+    print(f"{task.title} | {'Done' if task.is_complete else 'Pending'}")
+
+print()
+
+# --- Conflict detection ---
+print("===== Conflict Check =====")
+conflicts = scheduler.get_conflicts()
+if conflicts:
+    for warning in conflicts:
+        print(warning)
+else:
+    print("No scheduling conflicts found.")

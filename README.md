@@ -22,6 +22,14 @@ Your final app should:
 - Display the plan clearly (and ideally explain the reasoning)
 - Include tests for the most important scheduling behaviors
 
+## Smarter Scheduling
+
+The `Scheduler` class acts as the coordination layer between owners, pets, and tasks. Beyond basic task retrieval, it includes three algorithmic features:
+
+- **Sort by time** — `sort_by_time()` orders all tasks across all pets chronologically using a lambda key on each task's `time` attribute.
+- **Conflict detection** — `get_conflicts()` performs a pairwise comparison of scheduled tasks and returns human-readable warning messages for any two tasks sharing the same time slot, whether they belong to the same pet or different pets.
+- **Recurring task auto-scheduling** — `complete_task()` marks a task done and, if it has a `frequency` of `"daily"` or `"weekly"`, automatically creates the next occurrence using Python's `timedelta`.
+
 ## Getting started
 
 ### Setup

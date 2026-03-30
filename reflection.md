@@ -9,8 +9,6 @@ A user should be able to add a pet. add tasks and consider time constraints (sch
 - Briefly describe your initial UML design.
 - What classes did you include, and what responsibilities did you assign to each?
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 =======
     A user should be able to add a pet. add tasks and consider time constraints (scheduling).
 =======
@@ -25,9 +23,8 @@ Represents a single thing that needs to be done for a pet — feeding, grooming,
 
 Schedule
 Represents the time constraints for a task. Stores when a task starts, when it ends, and whether it repeats. Can check if it conflicts with another scheduled task to prevent double-booking.
->>>>>>> 2db1f27 (Add PawPal system: Owner, Pet, Task, Scheduler classes with tests)
 
->>>>>>> 89cfc7f (chore: add class skeletons from UML)
+
 **b. Design changes**
 
 - Did your design change during implementation?
@@ -44,10 +41,22 @@ Represents the time constraints for a task. Stores when a task starts, when it e
 - What constraints does your scheduler consider (for example: time, priority, preferences)?
 - How did you decide which constraints mattered most?
 
+    ribute (datetime) and the scheduler can sort by it, retrieve tasks at a specific time, and detect exact-time conflicts via get_conflicts().
+
+Frequency/Recurrence — tasks have a frequency attribute ("daily", "weekly", or None). When a recurring task is completed, the scheduler automatically generates the next occurrence using timedelta.
+
+Completion status — filter_tasks(is_complete=) lets you separate pending from done tasks, which is the basis for building an actionable schedule.
+
+I wanted the complexity to be simple for now with the option to alwasys add more later.
+
 **b. Tradeoffs**
 
 - Describe one tradeoff your scheduler makes.
 - Why is that tradeoff reasonable for this scenario?
+
+The scheduler only flags a conflict when two tasks share the exact same datetime. It has no concept of task duration, so a 30-minute walk starting at 8:00 AM and a task starting at 8:15 AM would not be flagged as a conflict — even though they clearly overlap in real life.
+
+This was a deliberate simplification. To detect overlapping durations you'd need each task to have both a start_time and an end_time (or a duration), and the conflict check would need to test whether any two time ranges intersect rather than just comparing timestamps. That's more accurate but adds complexity to both the data model and the scheduling logic.
 
 ---
 

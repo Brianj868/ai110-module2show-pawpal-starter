@@ -30,6 +30,32 @@ The `Scheduler` class acts as the coordination layer between owners, pets, and t
 - **Conflict detection** — `get_conflicts()` performs a pairwise comparison of scheduled tasks and returns human-readable warning messages for any two tasks sharing the same time slot, whether they belong to the same pet or different pets.
 - **Recurring task auto-scheduling** — `complete_task()` marks a task done and, if it has a `frequency` of `"daily"` or `"weekly"`, automatically creates the next occurrence using Python's `timedelta`.
 
+## Testing PawPal+
+
+### Run the tests
+
+```bash
+python -m pytest tests/test_pawpal.py -v
+```
+
+### What the tests cover
+
+52 tests across all four classes:
+
+- **Task** — default state, marking complete/incomplete, idempotent behavior
+- **Pet** — adding and removing tasks, removing a nonexistent task, empty state
+- **Owner** — adding/removing pets, removing a pet clears its tasks, `get_all_tasks` across multiple pets
+- **Scheduler (basics)** — retrieving tasks by pet, filtering incomplete tasks, time lookups, conflict detection
+- **Scheduler (sort/filter)** — chronological sort, filtering by completion status, filtering by pet name, combining both filters
+- **Scheduler (conflicts)** — same-pet conflicts, cross-pet conflicts, warning message content, tasks without a time are safely ignored, three-way conflicts
+- **Scheduler (complete_task)** — daily/weekly recurrence creates next occurrence with correct time, one-time tasks do not spawn follow-ups, next task inherits all attributes, graceful handling when pet is not found
+
+### Confidence level
+
+★★★★☆ (4/5)
+
+The core scheduling logic is thoroughly tested and all 52 cases pass. One star is held back because task duration is not modeled — the conflict detection only catches exact time matches, not overlapping windows. Any feature that depends on duration or priority at the class level would need additional coverage before the system could be considered fully reliable.
+
 ## Getting started
 
 ### Setup

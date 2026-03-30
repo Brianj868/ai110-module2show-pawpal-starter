@@ -4,18 +4,36 @@
 
 **a. Initial design**
 
+A user should be able to add a pet. add tasks and consider time constraints (scheduling).
+
 - Briefly describe your initial UML design.
 - What classes did you include, and what responsibilities did you assign to each?
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     A user should be able to add a pet. add tasks and consider time constraints (scheduling).
+=======
+    Owner
+Represents the person who uses the app. Owns one or more pets and serves as the top of the hierarchy — everything in the system traces back to an owner.
+
+Pet
+Represents an individual animal belonging to an owner. Holds the pet's identifying details and acts as the container for all tasks associated with that pet.
+
+Task
+Represents a single thing that needs to be done for a pet — feeding, grooming, a vet visit, etc. Tracks whether it's been completed and can optionally be linked to a schedule if it needs to happen at a specific time.
+
+Schedule
+Represents the time constraints for a task. Stores when a task starts, when it ends, and whether it repeats. Can check if it conflicts with another scheduled task to prevent double-booking.
+>>>>>>> 2db1f27 (Add PawPal system: Owner, Pet, Task, Scheduler classes with tests)
 
 >>>>>>> 89cfc7f (chore: add class skeletons from UML)
 **b. Design changes**
 
 - Did your design change during implementation?
 - If yes, describe at least one change and why you made it.
+
+    Basically, just added back references so that instead of the relationship just being one way, it goes both ways. For example, if a pet is deleted, it will delete the tasks associated with it as well instead of leaving them.
 
 ---
 

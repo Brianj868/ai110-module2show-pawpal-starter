@@ -7,6 +7,11 @@
 - Briefly describe your initial UML design.
 - What classes did you include, and what responsibilities did you assign to each?
 
+<<<<<<< HEAD
+=======
+    A user should be able to add a pet. add tasks and consider time constraints (scheduling).
+
+>>>>>>> 89cfc7f (chore: add class skeletons from UML)
 **b. Design changes**
 
 - Did your design change during implementation?

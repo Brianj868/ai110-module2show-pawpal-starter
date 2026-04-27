@@ -1,6 +1,7 @@
 import streamlit as st
 from datetime import datetime, date
 from pawpal_system import Owner, Pet, Task, Scheduler
+from agent import run_agent
 
 st.set_page_config(page_title="PawPal+", page_icon="🐾", layout="centered")
 st.title("🐾 PawPal+")
@@ -174,3 +175,40 @@ if st.button("Clear all tasks", use_container_width=True):
         p.tasks = []
     st.session_state.task_counter = 0
     st.rerun()
+
+st.divider()
+
+# --- AI Planner ---
+st.subheader("AI Planner")
+st.caption("Describe a goal and the AI will plan, act, and check its own work.")
+
+if not pets:
+    st.warning("Add at least one pet before using the AI Planner.")
+else:
+    goal = st.text_area(
+        "What should the AI do?",
+        placeholder="e.g. Plan a full day of care for Buddy. Add morning, afternoon, and evening tasks.",
+        height=80
+    )
+
+    if st.button("Run AI Planner", use_container_width=True):
+        if not goal.strip():
+            st.warning("Enter a goal first.")
+        else:
+            with st.spinner("AI is planning, acting, and checking..."):
+                if "task_counter" not in st.session_state:
+                    st.session_state.task_counter = 0
+                counter = [st.session_state.task_counter]
+                log = run_agent(goal, owner, scheduler, counter)
+                st.session_state.task_counter = counter[0]
+
+            # Show agent reasoning and actions
+            for role, text in log:
+                if role == "assistant":
+                    st.markdown(text)
+                elif role == "tool":
+                    with st.expander("Tool call", expanded=False):
+                        st.code(text, language="text")
+
+            st.success("AI finished. Schedule updated above.")
+            st.rerun()

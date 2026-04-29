@@ -207,3 +207,6 @@ The most interesting design question was not "what can the AI do?" but "what sho
 
 **3. Tests are a specification, not an afterthought.**
 Writing 52 tests after the implementation revealed several edge cases (orphaned tasks on pet removal, recurring tasks with no time set) that the code did not handle correctly. The tests forced the code to be correct, not just functional.
+
+Video Link
+    https://www.loom.com/share/05441fa86f1d43b4a52f7f326b9b9f29
